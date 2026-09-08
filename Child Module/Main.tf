@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "rg1" {
-  name     = var.rg1
-  location = var.location
+  for_each = var.rg1
+  name     = each.value.name
+  location = each.value.location
 }
