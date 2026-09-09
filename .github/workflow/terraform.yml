@@ -1,17 +1,30 @@
-name: Terraform CI/CD
+name: Terraform CI/CD Pipeline
 
 on:
-  push:
-    branches:
-      - main
-
   pull_request:
     branches:
       - main
 
+  push:
+    branches:
+      - main
+
+env:
+  ARM_CLIENT_ID: "a8e64ef7-de93-460e-bab9-c984d9b5ee78"
+  ARM_CLIENT_SECRET: "PRL8Q~FWND2S5JODARQyRBLkN9X2ObAW7qJ.ZanL"
+  ARM_SUBSCRIPTION_ID: "705d038c-7187-42ac-8cbf-06356d2c6647"
+  ARM_TENANT_ID: "a9e24e7c-aca7-4fa6-b4e2-c82fe26352dc"
+
 jobs:
-  terraform:
-    name: Terraform
+
+###########################################################
+# PR VALIDATION
+###########################################################
+
+  terraform-validation:
+
+    if: github.event_name == 'pull_request'
+
     runs-on: ubuntu-latest
 
     defaults:
@@ -28,18 +41,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # 3. Login to Azure
-      - - name: Azure Login
-          uses: azure/login@v2
-          with:
-          creds: |
-            {
-              "clientId": "${{ secrets.ARM_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}",
-              "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}",
-              "tenantId": "${{ secrets.ARM_TENANT_ID }}"
-            }
-
+      
       # 4. Initialize Terraform
       - name: Terraform Init
         run: terraform init
