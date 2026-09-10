@@ -19,7 +19,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: environment
+        working-directory: Parent Module
 
     steps:
 
@@ -84,7 +84,7 @@ jobs:
       - name: Set Azure Subscription
         run: |
           az account set \
-            --subscription "00000"
+            --subscription "705d038c-7187-42ac-8cbf-06356d2c6647"
 
       - name: Check Azure Login
         run: az account show
@@ -112,7 +112,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: environment
+        working-directory: Parent Module
 
     steps:
       - name: Checkout code
